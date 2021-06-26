@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 
 type ReturnType<T> = {
-    data: T | undefined,
+    data?: T,
     done?: boolean
 }
 

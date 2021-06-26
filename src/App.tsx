@@ -1,29 +1,23 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './App.css'
 import SearchBar from './Components/SearchBar'
 import ElementCard from './Components/ElementCard'
-import { IElements } from './Interfaces/SearchElement';
 
-import useFetch from './Hooks/useFetch'
-import {useStateElement} from './Hooks/useStateElement'
-
-import { ElementContext } from './Context/ElementContext';
+import useElementFetch from './Hooks/useElementFetch'
 
 
-function App() {
+const App: React.FC = () => {
 
-  const {data} = useFetch<IElements | undefined>('https://pubchem.ncbi.nlm.nih.gov/rest/pug/periodictable/JSON/?response_type=display');
-  const element = useStateElement();
+  const {state, setState, filterElement, filterAllInfoElement} = useElementFetch();
+  const [openInfo, setOpenInfo] = useState<boolean>(false);
+  const [selectedElement, setSelectedElement] = useState<string>('');
 
   return (
     <div className="App">
 
-      <ElementContext.Provider value={element}>
+        <ElementCard state={selectedElement}  filterAllInfoElement={filterAllInfoElement} openInfo={openInfo} />
+        <SearchBar setState={setState} filterElement={filterElement} setSelectedElement={setSelectedElement} setOpenInfo={setOpenInfo}/>
 
-        <ElementCard data={data} />
-        <SearchBar data={data} />
-
-      </ElementContext.Provider>
     </div>
   )
 }
